@@ -21,8 +21,35 @@ def compute_distance_between_images(
 
     Returns:
         The horizontal and vertical distance between images (as a 2-element array).
+
+    notes:
+        when a drone camera captures an image, it covers a certain area on the ground, known as the image footprint.
+        Consecutive images overlap both horizontally and vertically to ensure complete coverage of the area being surveyed.
+
+    implementation:
+        we compute the image footprint which tells us how much area is covered by one image at a certain height.
+        - foot print = [Fx, Fy]
+        Overlap and sidelap are derived from the dataset specification.
+        ex: if overlap is 0.8, it means that 80% of the area covered by one image overlaps with the next image.
+        - overlap = 0.8 => 20% new area in the next image
+        The distance between images can be calculated as:
+            - distance_x = Fx * (1 - overlap)
+            - distance_y = Fy * (1 - sidelap)
     """
-    raise NotImplementedError()
+    #compute footprint at the specified height
+    footprint = compute_image_footprint_on_surface(camera, dataset_spec.height)
+    Fx = footprint[0]
+    Fy = footprint[1]
+
+    #compute distance between images based on overlap and sidelap
+    distance_x = Fx * (1 - dataset_spec.overlap)
+    distance_y = Fy * (1 - dataset_spec.sidelap)
+
+    return np.array([distance_x, distance_y])
+
+    
+    
+    
 
 
 def compute_speed_during_photo_capture(
