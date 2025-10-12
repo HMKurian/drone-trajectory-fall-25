@@ -38,12 +38,12 @@ def compute_distance_between_images(
     """
     #compute footprint at the specified height
     footprint = compute_image_footprint_on_surface(camera, dataset_spec.height)
-    Fx = footprint[0]
-    Fy = footprint[1]
+    fx = footprint[0]
+    fy = footprint[1]
 
     #compute distance between images based on overlap and sidelap
-    distance_x = Fx * (1 - dataset_spec.overlap)
-    distance_y = Fy * (1 - dataset_spec.sidelap)
+    distance_x = fx * (1 - dataset_spec.overlap)
+    distance_y = fy * (1 - dataset_spec.sidelap)
 
     return np.array([distance_x, distance_y])
 
