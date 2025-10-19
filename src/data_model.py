@@ -1,5 +1,6 @@
 """Data models for the camera and user specification."""
 from dataclasses import dataclass
+@dataclass
 class DatasetSpec:
     """
     Data model for specifications of an image dataset.
