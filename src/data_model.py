@@ -47,10 +47,13 @@ class Camera:
     image_size_x_px: int #image width in pixels
     image_size_y_px: int #image height in pixels
 
-
+@dataclass
 class Waypoint:
     """
     Waypoints are positions where the drone should fly to and capture a photo.
     """
 
-    pass
+    x: float
+    y: float
+    z: float
+    speed: float  = 0.0 #speed at all waypoints is 0.0 by default
