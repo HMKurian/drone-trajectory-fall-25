@@ -84,5 +84,34 @@ def generate_photo_plan_on_grid(
     Returns:
         Scan plan as a list of waypoints.
 
+    Assumptions:
+        - The drone comes to a full stop at each waypoint (speed=0.0)
+
     """
-    raise NotImplementedError()
+    #compute distance between images
+    distance_x, distance_y = compute_distance_between_images(camera, dataset_spec)
+
+    #compute steps along x and y axes
+    #using ceil to ensure full coverage of the area
+    num_steps_x = math.ceil(dataset_spec.scan_dimension_x / distance_x)
+    num_steps_y = math.ceil(dataset_spec.scan_dimension_y / distance_y)
+
+    waypoints: T.List[Waypoint] = []
+    
+
+    for j in range(num_steps_y):
+        y_pos = j * distance_y
+        row_waypoints = []
+
+        for i in range(num_steps_x):
+            x_pos = i * distance_x
+            #each waypoint represents one position the drone flies to. List of waypoints forms the entire flight plan.
+            row_waypoints.append(Waypoint(x=x_pos, y=y_pos, z=dataset_spec.height, speed=0.0))
+        
+        #every other row is reversed, this creates a back-and-forth path instead of jumping back to the left after each row
+        if j % 2 == 1:
+            row_waypoints.reverse()
+        
+        waypoints.extend(row_waypoints) #flattens each row into full scan path list
+    return waypoints
+
