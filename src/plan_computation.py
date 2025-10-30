@@ -100,13 +100,13 @@ def generate_photo_plan_on_grid(
     
 
     for j in range(num_steps_y):
-        y_pos = j * distance_y
+        y_pos = float(j * distance_y)
         row_waypoints = []
 
         for i in range(num_steps_x):
-            x_pos = i * distance_x
+            x_pos = float(i * distance_x)
             #each waypoint represents one position the drone flies to. List of waypoints forms the entire flight plan.
-            row_waypoints.append(Waypoint(x=x_pos, y=y_pos, z=dataset_spec.height, speed=0.0))
+            row_waypoints.append(Waypoint(x=x_pos, y=y_pos, z=float(dataset_spec.height), speed=0.0))
         
         #every other row is reversed, this creates a back-and-forth path instead of jumping back to the left after each row
         if j % 2 == 1:
